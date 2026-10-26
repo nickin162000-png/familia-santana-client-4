@@ -1,0 +1,35 @@
+name: Build Familia Santana Client
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar o projeto
+        uses: actions/checkout@v4
+
+      - name: Instalar Java 8
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 8
+
+      - name: Baixar Forge MDK 1.8.9 (para pegar o gradlew)
+        run: |
+          curl -fL -o mdk.zip https://maven.minecraftforge.net/net/minecraftforge/forge/1.8.9-11.15.1.2318-1.8.9/forge-1.8.9-11.15.1.2318-1.8.9-mdk.zip
+          unzip -q mdk.zip -d mdk
+          cp -r mdk/gradle .
+          cp mdk/gradlew mdk/gradlew.bat .
+          chmod +x gradlew
+
+      - name: Compilar
+        run: ./gradlew setupCIWorkspace build --no-daemon
+
+      - name: Guardar o .jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: FamiliaSantanaClient-jar
+          path: build/libs/*.jar
