@@ -1,0 +1,8 @@
+[{
+  "modid": "familiasantana",
+  "name": "Familia Santana Client",
+  "description": "Client PvP com HUD completo para 1.8.9.",
+  "version": "${version}",
+  "mcversion": "1.8.9",
+  "authorList": ["Familia Santana"]
+}]
